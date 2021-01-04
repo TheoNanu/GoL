@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Food f = new Food(30);
+		Food f = new Food();
 		
 		CelulaAsexuata c = new CelulaAsexuata(f);
 		Thread t = new Thread(c);

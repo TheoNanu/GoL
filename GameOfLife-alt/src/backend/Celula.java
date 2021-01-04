@@ -1,10 +1,14 @@
 package backend;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.Random;
 
 public abstract class Celula {
-	private int timeFull = 5000;
-	private int timeStarve = 10000;
+	private int timeFull;
+	private int timeStarve;
 	private int numberOfMeals;
 	private Food food = null;
 	private Random rand;
@@ -13,6 +17,25 @@ public abstract class Celula {
 		this.food = f;
 		this.rand = new Random();
 		this.numberOfMeals = 0;
+		try (InputStream input = new FileInputStream("config.properties")) {
+
+            Properties prop = new Properties();
+
+            // load a properties file
+            prop.load(input);
+
+            String tFull = prop.getProperty("timeFull");
+            String tStarve = prop.getProperty("timeStarve");
+            
+            input.close();
+            
+            this.timeFull = Integer.parseInt(tFull);
+            this.timeStarve = Integer.parseInt(tStarve);
+
+        } catch (IOException ex) {
+        	this.timeFull = 5000;
+            this.timeStarve = 10000;
+        }
 	}
 	
 	public abstract void reproduce();
@@ -30,9 +53,9 @@ public abstract class Celula {
 	}
 	
 	public void die() {
-		System.out.println("I'm dying!");
-		int randNumberOfFood = rand.nextInt(5);
-		System.out.println("Food produced: " + randNumberOfFood);
+		System.out.println("I'm dying! (" + Thread.currentThread().getName() + ")");
+		int randNumberOfFood = rand.nextInt(5) + 1;
+		System.out.println("Food produced: " + randNumberOfFood + " (" + Thread.currentThread().getName() + ")");
 		this.food.increaseUnitsBy(randNumberOfFood);
 		/*int fUnits = this.food.getFoodUnits();
 		System.out.println("Food after I died: " + fUnits);*/

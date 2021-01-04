@@ -29,7 +29,7 @@ public class CelulaAsexuata extends Celula implements Runnable{
 				}
 				long lastTimeAte = System.currentTimeMillis();
 				// do nothing while the cell is full
-				while(System.currentTimeMillis() - lastTimeAte > super.getFullTime()) {
+				while(System.currentTimeMillis() - lastTimeAte < super.getFullTime()) {
 					
 				}
 				start = System.currentTimeMillis(); // now the cell is hungry, reset the timer
